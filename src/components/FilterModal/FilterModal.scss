@@ -1,0 +1,94 @@
+@use "../../styles/variables" as *;
+
+.filter-modal {
+  position: absolute;
+  top: 100%; // Positions below the button
+  left: 0;
+  z-index: 1000;
+  min-width: 350px;
+  background-color: $background-color;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 18px rgba(33, 63, 125, 0.06);
+  margin-top: 8px; // Adds spacing below the button
+  font-family: $font-family;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      label {
+        font-size: 13px;
+        font-weight: 500;
+        color: $text-color;
+      }
+
+      input,
+      select {
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 13px;
+        color: $text-color;
+        background-color: $background-color;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
+      }
+
+      .date-input-container {
+        position: relative;
+
+        .date-icon {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #8a8a8a;
+        }
+      }
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+
+      .reset-button {
+        padding: 10px 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background-color: $background-color;
+        font-size: 13px;
+        color: $text-color;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+      }
+
+      .filter-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: $secondary-color;
+        font-size: 13px;
+        color: $background-color;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($secondary-color, 10%);
+        }
+      }
+    }
+  }
+}

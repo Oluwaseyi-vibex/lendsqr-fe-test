@@ -1,5 +1,3 @@
-import React from 'react'
-
 import './StatsCard.scss'
 
 type Props = {
