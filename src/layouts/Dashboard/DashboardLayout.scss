@@ -1,0 +1,87 @@
+@use "../../styles/variables" as *;
+
+.dashboard-layout-container {
+  --dashboard-header-height: 100px;
+  --dashboard-sidebar-width: 283px;
+  --dashboard-content-padding: 60px;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: rgb($primary-color, 0.03);
+  color: $text-color;
+  font-family: $dashboard-font-family;
+}
+
+.dashboard-layout-header {
+  height: var(--dashboard-header-height);
+}
+
+.dashboard-layout-main {
+  display: grid;
+  grid-template-columns: var(--dashboard-sidebar-width) minmax(0, 1fr);
+  min-height: calc(100vh - var(--dashboard-header-height));
+  min-height: calc(100dvh - var(--dashboard-header-height));
+}
+
+.dashboard-layout-sidebar {
+  position: fixed;
+  top: var(--dashboard-header-height);
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: var(--dashboard-sidebar-width);
+  overflow-y: auto;
+  background-color: $background-color;
+  // border-right: 1px solid rgb($primary-color, 0.08);
+  box-shadow: 0 2px 8px rgba(33, 63, 125, 0.04);
+  padding: 32px 0px;
+  color: $primary-color;
+}
+
+.dashboard-layout-content {
+  grid-column: 2;
+  min-width: 0;
+  padding: var(--dashboard-content-padding);
+}
+
+// Tablets and below
+@media (max-width: 1023px) {
+  .dashboard-layout-container {
+    --dashboard-sidebar-width: 240px;
+    --dashboard-content-padding: 40px;
+  }
+}
+
+// Mobile phones and below
+@media (max-width: 767px) {
+  .dashboard-layout-container {
+    --dashboard-header-height: 80px;
+    --dashboard-content-padding: 24px;
+  }
+
+  .dashboard-layout-main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-layout-sidebar {
+    position: sticky;
+    top: var(--dashboard-header-height);
+    width: 100%;
+    max-height: 160px;
+    border-right: 0;
+    border-bottom: 1px solid rgb($primary-color, 0.08);
+    padding: 20px 24px;
+  }
+
+  .dashboard-layout-content {
+    padding: var(--dashboard-content-padding);
+  }
+}
+
+// Small mobile phones
+@media (max-width: 375px) {
+  .dashboard-layout-container {
+    --dashboard-content-padding: 16px;
+  }
+}

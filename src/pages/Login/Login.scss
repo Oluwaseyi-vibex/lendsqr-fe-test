@@ -1,0 +1,241 @@
+@use "../../styles/variables" as *;
+
+.container {
+  width: 100%;
+  background-color: white;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  overflow-x: hidden;
+
+  .left-section {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 67px;
+    padding-right: 67px;
+    background-color: rgb($primary-color, 0.009);
+
+    .logo-container {
+      position: absolute;
+      top: 30px;
+      width: 100%;
+    }
+
+    .pablo-img {
+      align-self: center;
+      margin-top: auto;
+      margin-bottom: auto;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .right-section {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    padding-left: 67px;
+    padding-right: 167px;
+
+    .right-section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      h1 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
+        color: $primary-color;
+      }
+
+      p {
+        font-size: 20px;
+        font-weight: 100;
+        line-height: 24px;
+        color: $text-color;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+
+        .input-container {
+          height: 48px;
+          border-radius: 8px;
+          border: 2px solid rgb($text-color, 0.15);
+          padding-left: 16px;
+          padding-right: 16px;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: $text-color;
+          display: flex;
+          gap: 4px;
+          align-items: center;
+
+          input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            font-size: 14px;
+
+            &:focus {
+              outline: none;
+            }
+
+            &::placeholder {
+              color: $text-color;
+              font-size: 14px;
+            }
+          }
+
+          .input-toggle {
+            flex-shrink: 0;
+            color: $secondary-color;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 8px;
+            margin: -8px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        .forgot-password {
+          font-size: 12px;
+          font-weight: 600;
+          color: $secondary-color;
+          align-self: flex-start;
+          padding: 8px 0;
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .submit-button {
+        width: 100%;
+        height: 48px;
+        border-radius: 8px;
+        background-color: $secondary-color;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }
+
+  // Small laptops and large tablets
+  @media (max-width: 1200px) {
+    .right-section {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+
+  // Tablets and below
+  @media (max-width: 1023px) {
+    flex-direction: column;
+
+    .left-section {
+      padding: 48px 48px 0;
+      flex: none;
+
+      .logo-container {
+        position: static;
+      }
+
+      .pablo-img {
+        max-height: 260px;
+        width: auto;
+        margin-top: 32px;
+        margin-bottom: 0;
+      }
+    }
+
+    .right-section {
+      padding: 48px;
+      flex: 1;
+      justify-content: flex-start;
+      gap: 40px;
+
+      .right-section-header {
+        h1 {
+          font-size: 32px;
+          line-height: 40px;
+        }
+
+        p {
+          font-size: 18px;
+          line-height: 22px;
+        }
+      }
+    }
+  }
+
+  // Mobile phones and below
+  @media (max-width: 767px) {
+    .left-section {
+      padding: 24px 24px 0;
+
+      .pablo-img {
+        display: none;
+      }
+    }
+
+    .right-section {
+      padding: 32px 24px 40px;
+      gap: 30px;
+
+      .right-section-header {
+        h1 {
+          font-size: 28px;
+          line-height: 34px;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 20px;
+        }
+      }
+
+      form {
+        gap: 24px;
+
+        .input-wrapper {
+          gap: 20px;
+        }
+      }
+    }
+  }
+
+  // Small mobile phones
+  @media (max-width: 375px) {
+    .left-section {
+      padding: 20px 16px 0;
+    }
+
+    .right-section {
+      padding: 24px 16px 32px;
+    }
+  }
+}
