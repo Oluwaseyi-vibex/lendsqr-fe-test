@@ -1,0 +1,325 @@
+@use "../../styles/variables" as *;
+
+.user-details-page {
+  padding: 24px;
+  font-family: $dashboard-font-family;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+
+  .user-details-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    gap: 26px;
+    margin-bottom: 36px;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      color: $text-color;
+      font-weight: 400;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .header-actions {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .header-action-buttons {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+
+        .blacklist-button {
+          padding: 8px 16px;
+          border: 1px solid #e4033b;
+          border-radius: 4px;
+          background-color: transparent;
+          color: #e4033b;
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+
+          &:disabled {
+            background-color: transparent;
+            color: #e4033b;
+            cursor: not-allowed;
+            opacity: 0.7;
+          }
+
+          &.blacklisted {
+            background-color: #ffebee;
+            color: #ff4d4f;
+            cursor: not-allowed;
+          }
+        }
+
+        .activate-button {
+          padding: 8px 16px;
+          border: 1px solid $secondary-color;
+          border-radius: 4px;
+          color: $secondary-color;
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgb($secondary-color, 0.1);
+          }
+        }
+
+        .inactive-button {
+          padding: 8px 16px;
+          border-radius: 4px;
+          background-color: #f0f0f0;
+          color: #8a8a8a;
+          font-size: 12px;
+          font-weight: 500;
+        }
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        color: $text-color;
+      }
+
+      .blacklist-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #ffebee;
+        color: #ff4d4f;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(#ff4d4f, 0.2);
+        }
+      }
+
+      .activate-button {
+        padding: 8px 16px;
+        border: 1px solid $secondary-color;
+        border-radius: 4px;
+        background-color: transparent;
+        color: $secondary-color;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .inactive-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #f0f0f0;
+        color: #545f7d;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .profile-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: $background-color;
+    padding: 30px 30px 0px 30px;
+    border-radius: 4px;
+    box-shadow: 0 4px 18px rgba(33, 63, 125, 0.02);
+    margin-bottom: 24px;
+
+    .profile-avatar {
+      .avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: rgba($primary-color, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 600;
+        color: $text-color;
+      }
+    }
+
+    .profile-info {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .divider {
+        width: 1px;
+        height: 85px;
+        background-color: rgba($text-color, 0.2);
+        margin: 0 30px;
+        flex: 0 0 auto;
+      }
+
+      .profile-name {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h2 {
+          margin: 0;
+          font-weight: 500;
+          font-size: 22px;
+          color: $primary-color;
+        }
+
+        .user-id {
+          font-size: 13px;
+          color: rgba($text-color, 0.7);
+        }
+      }
+
+      .profile-tier {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+
+        .user-tier {
+          display: flex;
+          align-items: start;
+          gap: 4px;
+
+          .tier-stars {
+            display: flex;
+            gap: 4px;
+          }
+
+          .star-icon {
+            color: #ffc107;
+          }
+        }
+
+        .change-tier-span {
+          border: none;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+
+      .profile-balance {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h2 {
+          font-weight: 500;
+          font-size: 22px;
+          color: $primary-color;
+        }
+
+        span {
+          font-size: 12px;
+          color: $primary-color;
+        }
+      }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 32px;
+      justify-content: space-between;
+
+      .tab {
+        padding: 5px 0;
+        background: transparent;
+        border: none;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(black, 0.8);
+        cursor: pointer;
+        border-bottom: 2.3px solid transparent;
+
+        &.active {
+          color: $secondary-color;
+          border-bottom-color: $secondary-color;
+          padding: 0px 20px;
+        }
+      }
+    }
+  }
+
+  .content-sections {
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(33, 63, 125, 0.02);
+
+    .section-divider {
+      padding-top: 24px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .section {
+      margin-bottom: 24px;
+
+      h3 {
+        font-size: 16px;
+        font-weight: 500;
+        color: $primary-color;
+        margin: 0 0 20px 0;
+      }
+
+      .section-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+
+        .info-box {
+          flex: 1;
+          min-width: 200px; // Ensures boxes don't get too narrow
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .info-header {
+            font-size: 12px;
+            color: $text-color;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .info-data {
+            font-size: 16px;
+            font-weight: 500;
+            color: $text-color;
+          }
+        }
+      }
+    }
+
+    .guarantor-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .social-icon {
+      color: rgba($text-color, 0.7);
+      margin-right: 8px;
+    }
+  }
+}

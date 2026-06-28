@@ -8,8 +8,7 @@ export default function DashboardLayout() {
     return (
         <div className="dashboard-layout-container">
             <header className="dashboard-layout-header">
-                <NavBar />
-            </header>
+                <NavBar />            </header>
 
             <main className="dashboard-layout-main">
                 <aside className="dashboard-layout-sidebar">

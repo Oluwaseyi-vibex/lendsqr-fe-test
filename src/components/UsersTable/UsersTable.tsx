@@ -1,27 +1,25 @@
 import { useState } from "react";
-import { FiChevronDown, FiChevronUp, FiFilter, FiMoreVertical } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiFilter } from "react-icons/fi";
 import "./UsersTable.scss";
 import FilterModal from "../FilterModal/FilterModal";
+import TableActionsMenu from "./TableActionsMenu/TableActionsMenu";
+import type { User } from "../../types/user";
+import { useSearchStore } from "../../store/useSearchStore";
+import { useDebounce } from "../../hooks/useDebounce";
 
-interface User {
-    id: number;
-    organization: string;
-    username: string;
-    email: string;
-    phoneNumber: string;
-    dateJoined: string;
-    status: "Active" | "Inactive" | "Pending" | "Blacklisted";
-}
+
 
 interface UsersTableProps {
     users: User[];
 }
 
 const UsersTable = ({ users }: UsersTableProps) => {
+    const { searchQuery } = useSearchStore();
     const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "ascending" | "descending" } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [showFilterModal, setShowFilterModal] = useState(false);
+    const debouncedSearchQuery = useDebounce(searchQuery, 500); // Debounce for 500ms
     const [filters, setFilters] = useState({
         organization: "",
         username: "",
@@ -30,12 +28,13 @@ const UsersTable = ({ users }: UsersTableProps) => {
         phoneNumber: "",
         status: "",
     });
+
     const organizations = [...new Set(users.map((user) => user.organization))];
 
     const handleFilter = (newFilters: typeof filters) => {
         setFilters(newFilters);
         setShowFilterModal(false);
-        setCurrentPage(1); // Reset to first page on filter
+        setCurrentPage(1);
     };
 
     const handleReset = () => {
@@ -50,6 +49,49 @@ const UsersTable = ({ users }: UsersTableProps) => {
         setCurrentPage(1);
     };
 
+    // Step 1: Filter users by both searchQuery and filters
+    // const filteredUsers = users.filter((user) => {
+    //     // Search query filter (case-insensitive)
+    //     const matchesSearch =
+    //         searchQuery === "" ||
+    //         user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //         user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //         user.phoneNumber.includes(searchQuery) ||
+    //         user.accountNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //         user.organization.toLowerCase().includes(searchQuery.toLowerCase());
+
+    //     // Filter modal filter
+    //     const matchesFilters =
+    //         (filters.organization === "" || user.organization === filters.organization) &&
+    //         (filters.username === "" || user.username.toLowerCase().includes(filters.username.toLowerCase())) &&
+    //         (filters.email === "" || user.email.toLowerCase().includes(filters.email.toLowerCase())) &&
+    //         (filters.date === "" || user.dateJoined.includes(filters.date)) &&
+    //         (filters.phoneNumber === "" || user.phoneNumber.includes(filters.phoneNumber)) &&
+    //         (filters.status === "" || user.status === filters.status);
+
+    //     return matchesSearch && matchesFilters;
+    // });
+    const filteredUsers = users.filter((user) => {
+        // Debounced search query filter (case-insensitive)
+        const matchesSearch =
+            debouncedSearchQuery === "" ||
+            user.username.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+            user.email.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+            user.phoneNumber.includes(debouncedSearchQuery) ||
+            user.accountNumber.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+            user.organization.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
+
+        // Filter modal filter
+        const matchesFilters =
+            (filters.organization === "" || user.organization === filters.organization) &&
+            (filters.username === "" || user.username.toLowerCase().includes(filters.username.toLowerCase())) &&
+            (filters.email === "" || user.email.toLowerCase().includes(filters.email.toLowerCase())) &&
+            (filters.date === "" || user.dateJoined.includes(filters.date)) &&
+            (filters.phoneNumber === "" || user.phoneNumber.includes(filters.phoneNumber)) &&
+            (filters.status === "" || user.status === filters.status);
+
+        return matchesSearch && matchesFilters;
+    });
 
 
 
@@ -66,37 +108,27 @@ const UsersTable = ({ users }: UsersTableProps) => {
         return sortConfig.direction === "ascending" ? <FiChevronUp /> : <FiChevronDown />;
     };
 
-    const sortedUsers = [...users];
-
-    const filteredUsers = sortedUsers.filter((user) => {
-        return (
-            (filters.organization === "" || user.organization === filters.organization) &&
-            (filters.username === "" || user.username.toLowerCase().includes(filters.username.toLowerCase())) &&
-            (filters.email === "" || user.email.toLowerCase().includes(filters.email.toLowerCase())) &&
-            (filters.date === "" || user.dateJoined.includes(filters.date)) &&
-            (filters.phoneNumber === "" || user.phoneNumber.includes(filters.phoneNumber)) &&
-            (filters.status === "" || user.status === filters.status)
-        );
-    });
+    // Step 2: Sort the filtered users
+    const sortedUsers = [...filteredUsers];
     if (sortConfig) {
         sortedUsers.sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
+            const aValue = a[sortConfig.key];
+            const bValue = b[sortConfig.key];
+            if (aValue < bValue) {
                 return sortConfig.direction === "ascending" ? -1 : 1;
             }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
+            if (aValue > bValue) {
                 return sortConfig.direction === "ascending" ? 1 : -1;
             }
             return 0;
         });
     }
 
-
+    // Step 3: Paginate the sorted users
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-
-    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    const currentItems = sortedUsers.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(sortedUsers.length / itemsPerPage); const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     const getVisiblePages = (): Array<number | "..."> => {
         const maxVisiblePages = 5;
@@ -187,7 +219,11 @@ const UsersTable = ({ users }: UsersTableProps) => {
                                 </span>
                             </td>
                             <td className="actions-cell">
-                                <FiMoreVertical className="actions-icon" />
+                                <TableActionsMenu
+                                    userId={user.id}
+                                    onBlacklistUser={(id) => console.log("Blacklist user:", id)}
+                                    onActivateUser={(id) => console.log("Activate user:", id)}
+                                />
                             </td>
                         </tr>
                     ))}

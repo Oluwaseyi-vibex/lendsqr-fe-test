@@ -86,7 +86,7 @@
         cursor: pointer;
 
         &:hover {
-          background-color: darken($secondary-color, 10%);
+          background-color: rgba($secondary-color, 0.5);
         }
       }
     }

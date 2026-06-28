@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useSearchStore } from "../../store/useSearchStore";
 import { IoSearchSharp } from "react-icons/io5";
 import Logo from "../Logo/Logo";
-import Bell from "../../assets/bell.svg"
-import Avatar from "../../assets/avatar.svg"
-
+import Bell from "../../assets/bell.svg";
+import Avatar from "../../assets/avatar.svg";
 import "./NavBar.scss";
 import { BiCaretDown } from "react-icons/bi";
 
 const NavBar = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+    const { searchQuery, setSearchQuery } = useSearchStore();
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,10 +31,8 @@ const NavBar = () => {
 
             <div className="navbar-right">
                 <p>Docs</p>
-
                 <img src={Bell} alt="Notification Bell" className="bell-icon" />
                 <img src={Avatar} alt="User Avatar" className="avatar-icon" />
-
                 <div>
                     <p>Adedeji</p>
                     <BiCaretDown />

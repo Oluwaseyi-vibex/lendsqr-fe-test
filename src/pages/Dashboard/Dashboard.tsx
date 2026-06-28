@@ -5,23 +5,16 @@ import ActiveUsersIcon from '../../assets/dashboard/active-users-stats-card.svg'
 import UsersWithLoansIcon from '../../assets/dashboard/users-with-loans-stats-card.svg';
 import UsersWithSavingsIcon from '../../assets/dashboard/users-with-savings-stats-card.svg';
 import UsersTable from "../../components/UsersTable/UsersTable";
+import type { User } from "../../types/user";
 import "./Dashboard.scss";
 
-interface User {
-    id: number;
-    organization: string;
-    username: string;
-    email: string;
-    phoneNumber: string;
-    dateJoined: string;
-    status: "Active" | "Inactive" | "Pending" | "Blacklisted";
-    hasLoan: boolean;
-    hasSavings: boolean;
-}
-
 const Dashboard = () => {
+    const [searchQuery, setSearchQuery] = useState("");
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
+    const [debouncedQuery, setDebouncedQuery] = useState("");
+
+
 
     useEffect(() => {
         const fetchUsers = async () => {
