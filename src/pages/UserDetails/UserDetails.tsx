@@ -1,10 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { FiArrowLeft, FiStar, FiUser } from "react-icons/fi";
-import NotFoundIllustration from "../../assets/EmptyState.svg"
+import { FiArrowLeft, FiStar, } from "react-icons/fi";
 import "./UserDetails.scss";
 import { useEffect, useState } from "react";
 import { HiArrowLongLeft } from "react-icons/hi2";
-import { LuUser, LuUserRound } from "react-icons/lu";
+import { LuUserRound } from "react-icons/lu";
 import type { User } from "../../types/user";
 import { getUserFromDB, saveUserToDB } from "../../utils/db";
 import { FaSpinner } from "react-icons/fa";

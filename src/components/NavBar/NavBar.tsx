@@ -1,7 +1,7 @@
 import { useSearchStore } from "../../store/useSearchStore";
 import { IoSearchSharp } from "react-icons/io5";
 import { BiCaretDown } from "react-icons/bi";
-import { FiMenu, FiSidebar } from "react-icons/fi";
+import { FiSidebar } from "react-icons/fi";
 import Logo from "../Logo/Logo";
 import Bell from "../../assets/bell.svg";
 import Avatar from "../../assets/avatar.svg";

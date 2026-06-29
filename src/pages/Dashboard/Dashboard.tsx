@@ -9,10 +9,8 @@ import type { User } from "../../types/user";
 import "./Dashboard.scss";
 
 const Dashboard = () => {
-    const [searchQuery, setSearchQuery] = useState("");
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
-    const [debouncedQuery, setDebouncedQuery] = useState("");
 
 
 
