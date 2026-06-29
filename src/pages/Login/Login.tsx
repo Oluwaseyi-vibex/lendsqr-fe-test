@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa"; // Loading spinner icon
@@ -12,10 +12,19 @@ type FormData = {
 };
 
 const Login = () => {
+
+    const navigate = useNavigate();
+    const loggedIn = localStorage.getItem("login")
+
+    useEffect(() => {
+        if (loggedIn === "true") {
+            navigate("/users")
+
+        }
+    })
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState("");
     const [isLoading, setIsLoading] = useState(false); // Loading state
-    const navigate = useNavigate();
 
     // Dummy user data for authentication
     const dummyUsers = [
