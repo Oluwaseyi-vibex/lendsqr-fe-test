@@ -1,0 +1,6 @@
+- [ ] Add responsive dashboard layout: on mobile, sidebar becomes toggleable slide-in drawer with backdrop
+- [ ] Add hamburger icon in NavBar visible at <= 768px
+- [ ] Wire state (open/close) between DashboardLayout and NavBar (and close sidebar on route change)
+- [ ] Update DashboardLayout styles: desktop grid, mobile overlay drawer + body scroll lock
+- [ ] Update NavBar styles: reserve space for hamburger, ensure right section layout doesn’t overflow
+- [ ] Run dev/build and verify: desktop sidebar fixed, mobile drawer toggles correctly

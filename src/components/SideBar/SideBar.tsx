@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
 
@@ -43,7 +43,7 @@ const menuSections: MenuSection[] = [
     {
         title: "Customers",
         items: [
-            { label: "Users", icon: UsersIcon, to: "/dashboard/users", active: true },
+            { label: "Users", icon: UsersIcon, to: "/users", active: true },
             { label: "Guarantors", icon: GuarantorsIcon, to: "/dashboard/guarantors" },
             { label: "Loans", icon: LoanRequestsIcon, to: "/dashboard/loans" },
             { label: "Decision Models", icon: DecisionModelsIcon, to: "/dashboard/decision-models" },
@@ -79,6 +79,16 @@ const menuSections: MenuSection[] = [
 ];
 
 const SideBar = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
+    const enhancedSections = menuSections.map((section) => ({
+        ...section,
+        items: section.items.map((item) => ({
+            ...item,
+            active: location.pathname === item.to,
+        })),
+    }));
+
     return (
         <nav className="sidebar" aria-label="Dashboard navigation">
             <button className="sidebar-organization" type="button">
@@ -93,34 +103,37 @@ const SideBar = () => {
             </Link>
 
             <div className="sidebar-sections">
-                {menuSections.map((section) => (
+                {enhancedSections.map((section) => (
                     <section className="sidebar-section" key={section.title}>
                         <h2>{section.title}</h2>
                         <ul>
-                            {section.items.map((item) => {
-                                return (
-                                    <li key={item.label}>
-                                        <Link
-                                            className={`sidebar-link${item.active ? " sidebar-link-active" : ""}`}
-                                            to={item.to}
-                                            aria-current={item.active ? "page" : undefined}
-                                        >
-                                            <img src={item.icon} alt="" aria-hidden="true" />
-                                            <span>{item.label}</span>
-                                        </Link>
-                                    </li>
-                                );
-                            })}
+                            {section.items.map((item) => (
+                                <li key={item.label}>
+                                    <Link
+                                        className={`sidebar-link${item.active ? " sidebar-link-active" : ""}`}
+                                        to={item.to}
+                                        aria-current={item.active ? "page" : undefined}
+                                    >
+                                        <img src={item.icon} alt="" aria-hidden="true" />
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </section>
                 ))}
             </div>
 
             <div className="sidebar-footer">
-                <Link className="sidebar-link sidebar-logout" to="/">
+                <div onClick={() => {
+                    localStorage.clear()
+                    navigate('/')
+                }}
+                    className="sidebar-link sidebar-logout"
+                >
                     <MdOutlineLogout aria-hidden="true" />
                     <span>Logout</span>
-                </Link>
+                </div>
                 <p>v1.2.0</p>
             </div>
         </nav>

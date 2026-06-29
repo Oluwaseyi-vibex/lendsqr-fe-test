@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiStar, FiUser } from "react-icons/fi";
-import { FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
+import NotFoundIllustration from "../../assets/EmptyState.svg"
 import "./UserDetails.scss";
 import { useEffect, useState } from "react";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { LuUser, LuUserRound } from "react-icons/lu";
 import type { User } from "../../types/user";
+import { getUserFromDB, saveUserToDB } from "../../utils/db";
+import { FaSpinner } from "react-icons/fa";
 
 
 
@@ -15,29 +17,75 @@ const UserDetails = () => {
 
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const loadUser = async () => {
+            setLoading(true);
+            setError(null);
+
             try {
+                // 1. Try to get user from IndexedDB first
+                const cachedUser = await getUserFromDB(Number(id));
+                if (cachedUser) {
+                    setUser(cachedUser);
+                    setLoading(false);
+                    return;
+                }
+
+                // 2. If not in IndexedDB, fetch from JSON
                 const response = await fetch("/users_data.json");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch user data");
+                }
                 const users: User[] = await response.json();
                 const foundUser = users.find((u) => u.id === Number(id));
+
                 if (foundUser) {
+                    // 3. Save to IndexedDB for future visits
+                    await saveUserToDB(foundUser);
                     setUser(foundUser);
+                } else {
+                    setError("The user you are looking for does not exist.");
                 }
-                setLoading(false);
-            } catch (error) {
-                console.error("Error loading user data:", error);
+            } catch (err) {
+                console.error("Error loading user data:", err);
+                setError("Failed to load user data. Please try again.");
+            } finally {
                 setLoading(false);
             }
         };
-        fetchUserData();
+
+        loadUser();
     }, [id]);
 
-    if (loading) return <div>Loading...</div>;
-    if (!user) return <div>User not found</div>;
+    if (loading) {
+        return (
+            <div className="loading-state">
+                <FaSpinner className="spinner" />
+                <p>Loading user details...</p>
+            </div>
+        );
+    }
 
+    // Empty/Error state: User not found
+    if (error || !user) {
+        return (
+            <div className="empty-state">
+                <div className="empty-state-content">
+
+                    <h3>User Not Found</h3>
+                    <p>{error || "The user you're looking for doesn't exist."}</p>
+                    <button
+                        onClick={() => navigate("/users")}
+                        className="empty-state-button"
+                    >
+                        <FiArrowLeft /> Back to Users
+                    </button>
+                </div>
+            </div>
+        );
+    }
     const handleBlacklist = () => {
         console.log("Blacklist user:", user.id);
         // Add your blacklist logic here

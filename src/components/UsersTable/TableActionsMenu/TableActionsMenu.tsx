@@ -31,7 +31,7 @@ const TableActionsMenu = ({
   }, []);
 
   const handleViewDetails = () => {
-    navigate(`users/${userId}`); // Navigate to the user details page
+    navigate(`${userId}`); // Navigate to the user details page
     setIsOpen(false);
   };
 

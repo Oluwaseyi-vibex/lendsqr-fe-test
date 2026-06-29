@@ -7,24 +7,82 @@
   min-width: 0;
   font-family: $dashboard-font-family;
 
-  .stats-cards-container {
-    display: flex;
-    gap: 20px;
-  }
-
   h1 {
+    margin: 0;
     color: $primary-color;
     font-size: 24px;
     font-weight: 500;
     line-height: 1.2;
   }
+
+  .stats-cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+  }
 }
 
-@media screen and (max-width: 768px) {
+/* Tablet: 768px to 1023px */
+@media (max-width: 1023px) {
   .dashboard-page {
+    gap: 32px;
+
+    h1 {
+      font-size: 22px;
+    }
+
     .stats-cards-container {
-      flex-direction: column;
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+    }
+  }
+}
+
+/* Mobile: 600px to 767px */
+@media (max-width: 767px) {
+  .dashboard-page {
+    gap: 28px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .stats-cards-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+}
+
+/* Small Mobile: 375px to 599px */
+@media (max-width: 599px) {
+  .dashboard-page {
+    gap: 24px;
+
+    h1 {
+      font-size: 18px;
+    }
+
+    .stats-cards-container {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  }
+}
+
+/* Extra Small Mobile: below 375px */
+@media (max-width: 374px) {
+  .dashboard-page {
+    gap: 20px;
+
+    h1 {
+      font-size: 16px;
+    }
+
+    .stats-cards-container {
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
   }
 }

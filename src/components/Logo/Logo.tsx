@@ -1,13 +1,14 @@
-import LogoText from "../../assets/lendsqr.svg"
-import LogoIcon from "../../assets/logo-icon.svg"
-import "./Logo.scss"
+import LogoText from "../../assets/lendsqr.svg";
+import LogoIcon from "../../assets/logo-icon.svg";
+import "./Logo.scss";
+
 const Logo = () => {
     return (
-        <div className="logo-container">
-            <img src={LogoIcon} alt="Logo" />
-            <img src={LogoText} alt="Lendsqr" />
-        </div>
-    )
-}
+        <a href="/" className="logo-container" aria-label="Lendsqr home">
+            <img src={LogoIcon} alt="" aria-hidden="true" className="logo-icon" />
+            <img src={LogoText} alt="Lendsqr" className="logo-text" />
+        </a>
+    );
+};
 
-export default Logo
+export default Logo;

@@ -1,23 +1,71 @@
-import { useState } from "react"
-
-import PabloImg from "../../assets/pablo-sign-in.svg"
-import "./Login.scss"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa"; // Loading spinner icon
+import PabloImg from "../../assets/pablo-sign-in.svg";
+import "./Login.scss";
 import Logo from "../../components/Logo/Logo";
+
+type FormData = {
+    email: string;
+    password: string;
+};
+
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [loginError, setLoginError] = useState("");
+    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const navigate = useNavigate();
+
+    // Dummy user data for authentication
+    const dummyUsers = [
+        { email: import.meta.env.VITE_EMAIL, password: import.meta.env.VITE_PASSWORD },
+    ];
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormData>();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    const onSubmit = async (data: FormData) => {
+        setLoginError("");
+        setIsLoading(true); // Start loading
+
+        try {
+            // Simulate API call delay (1.5 seconds)
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            // Check if credentials match dummy data
+            const user = dummyUsers.find(
+                (u) => u.email === data.email && u.password === data.password
+            );
+
+            if (user) {
+                localStorage.setItem("login", "true")
+                navigate("/users");
+            } else {
+                // Failed login
+                setLoginError("Invalid email or password");
+            }
+        } catch (error) {
+            setLoginError("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(false); // Stop loading
+        }
+    };
+
     return (
         <div className="container">
-
             <section className="left-section">
                 <div className="logo-container">
                     <Logo />
                 </div>
-
-                <img className="pablo-img" src={PabloImg} />
+                <img className="pablo-img" src={PabloImg} alt="Sign in illustration" />
             </section>
 
             <section className="right-section">
@@ -26,27 +74,79 @@ const Login = () => {
                     <p>Enter details to login.</p>
                 </div>
 
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* Login Error Message */}
+                    {loginError && <p className="error-message">{loginError}</p>}
                     <div className="input-wrapper">
+                        {/* Email Input */}
                         <div className="input-container">
-                            <input type="email" placeholder="Email" className="" />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className={errors.email ? "input-error" : ""}
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: "Invalid email address",
+                                    },
+                                })}
+                                disabled={isLoading} // Disable input during loading
+                            />
                         </div>
+                        {errors.email && (
+                            <p className="error-message">{errors.email.message}</p>
+                        )}
 
+                        {/* Password Input */}
                         <div className="input-container">
-                            <input type={showPassword ? "text" : "password"} placeholder="Password" className="" />
-                            <div onClick={togglePasswordVisibility} className="input-toggle">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                className={errors.password ? "input-error" : ""}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 6,
+                                        message: "Password must be at least 6 characters",
+                                    },
+                                })}
+                                disabled={isLoading} // Disable input during loading
+                            />
+                            <div
+                                onClick={togglePasswordVisibility}
+                                className="input-toggle"
+                                style={{ opacity: isLoading ? 0.5 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
+                            >
                                 {showPassword ? "HIDE" : "SHOW"}
                             </div>
                         </div>
+                        {errors.password && (
+                            <p className="error-message">{errors.password.message}</p>
+                        )}
+
 
                         <p className="forgot-password">FORGOT PASSWORD?</p>
                     </div>
 
-                    <button className="submit-button" type="submit">LOG IN</button>
+                    {/* Submit Button with Loading State */}
+                    <button
+                        className="submit-button"
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                                <FaSpinner className="spinner" /> LOGGING IN...
+                            </>
+                        ) : (
+                            "LOG IN"
+                        )}
+                    </button>
                 </form>
             </section>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

@@ -1,5 +1,99 @@
+@use "../../styles/variables" as *;
+
 .logo-container {
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 180ms ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $secondary-color;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+}
+
+/* Tablet: 768px to 1023px */
+@media (max-width: 1023px) {
+  .logo-container {
+    gap: 10px;
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo-text {
+      height: 28px;
+    }
+  }
+}
+
+/* Mobile: 600px to 767px */
+@media (max-width: 767px) {
+  .logo-container {
+    gap: 8px;
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo-text {
+      height: 24px;
+    }
+  }
+}
+
+/* Small Mobile: 375px to 599px */
+@media (max-width: 599px) {
+  .logo-container {
+    gap: 6px;
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .logo-text {
+      height: 20px;
+    }
+  }
+}
+
+/* Extra Small Mobile: below 375px */
+@media (max-width: 374px) {
+  .logo-container {
+    gap: 4px;
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .logo-text {
+      height: 18px;
+    }
+  }
 }

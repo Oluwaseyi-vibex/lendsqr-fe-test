@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp, FiFilter } from "react-icons/fi";
-import "./UsersTable.scss";
 import FilterModal from "../FilterModal/FilterModal";
 import TableActionsMenu from "./TableActionsMenu/TableActionsMenu";
 import type { User } from "../../types/user";
 import { useSearchStore } from "../../store/useSearchStore";
 import { useDebounce } from "../../hooks/useDebounce";
+import "./UsersTable.scss";
 
 
 
@@ -124,6 +124,35 @@ const UsersTable = ({ users }: UsersTableProps) => {
         });
     }
 
+    // Empty state: No users match the filters/search
+    if (sortedUsers.length === 0) {
+        return (
+            <div className="empty-state">
+                <div className="empty-state-content">
+
+                    <h3>No Users Found</h3>
+                    <p>There are no users matching your search criteria.</p>
+                    <button
+                        onClick={() => {
+                            setFilters({
+                                organization: "",
+                                username: "",
+                                email: "",
+                                date: "",
+                                phoneNumber: "",
+                                status: "",
+                            });
+                            useSearchStore.getState().setSearchQuery("");
+                        }}
+                        className="empty-state-button"
+                    >
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     // Step 3: Paginate the sorted users
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -233,19 +262,22 @@ const UsersTable = ({ users }: UsersTableProps) => {
             <div className="table-footer">
                 <div className="showing-entries">
                     <span>Showing</span>
-                    <select
-                        value={itemsPerPage}
-                        onChange={(e) => {
-                            setItemsPerPage(Number(e.target.value));
-                            setCurrentPage(1);
-                        }}
-                        className="entries-select"
-                    >
-                        <option value={10}>10</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                    </select>
-                    <span>out of {filteredUsers.length}</span>
+
+                    <div className="entries-select-wrapper">
+                        <select
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                                setItemsPerPage(Number(e.target.value));
+                                setCurrentPage(1);
+                            }}
+                            className="entries-select"
+                        >
+                            <option value={10}>10</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                        </select>
+                        <span>out of {filteredUsers.length}</span>
+                    </div>
                 </div>
                 <div className="pagination">
                     <button

@@ -93,7 +93,6 @@
 }
 
 .sidebar-link {
-  // background-color: black;
   position: relative;
   min-height: 40px;
   padding: 0px 30px;
@@ -135,6 +134,10 @@
     font-size: 12px;
     line-height: 1.2;
   }
+
+  .sidebar-logout {
+    cursor: pointer;
+  }
 }
 
 .sidebar-logout {
@@ -144,26 +147,40 @@
 // Mobile phones and below
 @media (max-width: 767px) {
   .sidebar {
+    width: 100%;
     min-height: auto;
   }
 
   .sidebar-organization {
     margin-bottom: 18px;
+    padding: 0px 24px;
   }
 
   .sidebar-sections {
     gap: 22px;
+    padding-left: 24px;
+
+    h2 {
+      // margin: 0 0 2px;
+      padding: 0px 0px;
+
+      color: $text-color;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
   }
 
   .sidebar-link {
     min-height: 44px;
     margin: 0 -24px;
-    padding: 0 24px;
+    // padding: 0 24px;
   }
 
   .sidebar-dashboard-link {
-    margin: 16px -24px 22px;
-    padding: 10px 24px;
+    margin: 0px 0px 20px 0px;
+    padding: 0px 24px;
   }
 
   .sidebar-footer {

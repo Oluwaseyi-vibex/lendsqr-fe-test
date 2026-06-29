@@ -23,6 +23,10 @@
   min-height: calc(100dvh - var(--dashboard-header-height));
 }
 
+.dashboard-layout-backdrop {
+  display: none;
+}
+
 .dashboard-layout-sidebar {
   position: fixed;
   top: var(--dashboard-header-height);
@@ -31,10 +35,10 @@
   z-index: 10;
   width: var(--dashboard-sidebar-width);
   overflow-y: auto;
+  overflow-x: hidden;
   background-color: $background-color;
-  // border-right: 1px solid rgb($primary-color, 0.08);
   box-shadow: 0 2px 8px rgba(33, 63, 125, 0.04);
-  padding: 32px 0px;
+  padding: 32px 0;
   color: $primary-color;
 }
 
@@ -44,44 +48,85 @@
   padding: var(--dashboard-content-padding);
 }
 
-// Tablets and below
+/* Tablet: 768px to 1023px */
 @media (max-width: 1023px) {
   .dashboard-layout-container {
+    --dashboard-header-height: 80px;
     --dashboard-sidebar-width: 240px;
     --dashboard-content-padding: 40px;
   }
 }
 
-// Mobile phones and below
+/* Mobile: 600px to 767px */
 @media (max-width: 767px) {
   .dashboard-layout-container {
-    --dashboard-header-height: 80px;
+    --dashboard-header-height: 70px;
     --dashboard-content-padding: 24px;
   }
 
   .dashboard-layout-main {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 
   .dashboard-layout-sidebar {
-    position: sticky;
     top: var(--dashboard-header-height);
-    width: 100%;
-    max-height: 160px;
-    border-right: 0;
-    border-bottom: 1px solid rgb($primary-color, 0.08);
-    padding: 20px 24px;
+    left: 0;
+    bottom: 0;
+    width: min(85vw, 300px);
+    z-index: 30;
+    /* drawer hidden by default */
+    transform: translateX(-100%);
+    transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 24px 0;
+  }
+
+  .dashboard-layout-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .dashboard-layout-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dashboard-layout-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .dashboard-layout-content {
-    padding: var(--dashboard-content-padding);
+    grid-column: auto;
   }
 }
 
-// Small mobile phones
-@media (max-width: 375px) {
+/* Small Mobile: 375px to 599px */
+@media (max-width: 599px) {
   .dashboard-layout-container {
+    --dashboard-header-height: 64px;
+    --dashboard-content-padding: 20px;
+  }
+
+  .dashboard-layout-sidebar {
+    width: min(90vw, 300px);
+    padding: 20px 0;
+  }
+}
+
+/* Extra Small Mobile: below 375px */
+@media (max-width: 374px) {
+  .dashboard-layout-container {
+    --dashboard-header-height: 60px;
     --dashboard-content-padding: 16px;
+  }
+
+  .dashboard-layout-sidebar {
+    width: min(95vw, 240px);
+    padding: 16px 0;
   }
 }
