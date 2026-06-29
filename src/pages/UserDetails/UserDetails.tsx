@@ -37,7 +37,16 @@ const UserDetails = () => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch user data");
                 }
-                const users: User[] = await response.json();
+                let users: User[];
+                try {
+                    const data = await response.json();
+                    if (!Array.isArray(data)) {
+                        throw new Error("Invalid data format");
+                    }
+                    users = data;
+                } catch {
+                    throw new Error("Invalid data format");
+                }
                 const foundUser = users.find((u) => u.id === Number(id));
 
                 if (foundUser) {
@@ -49,7 +58,9 @@ const UserDetails = () => {
                 }
             } catch (err) {
                 console.error("Error loading user data:", err);
-                setError("Failed to load user data. Please try again.");
+                setError(err instanceof Error && err.message === "Invalid data format"
+                    ? "Invalid data format"
+                    : "Failed to load user data. Please try again.");
             } finally {
                 setLoading(false);
             }
