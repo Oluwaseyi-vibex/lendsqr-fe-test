@@ -4,6 +4,7 @@ import DashboardLayout from "./layouts/Dashboard/DashboardLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import UserDetails from "./pages/UserDetails/UserDetails";
 import NotFound from "./pages/NotFound/NotFound";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
         </Route>
 
         <Route path="*" element={<NotFound />} />
+
       </Routes>
+      <Toaster />
     </BrowserRouter >
   )
 }

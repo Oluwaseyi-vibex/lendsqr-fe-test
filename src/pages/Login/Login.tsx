@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa"; // Loading spinner icon
 import PabloImg from "../../assets/pablo-sign-in.svg";
-import "./Login.scss";
 import Logo from "../../components/Logo/Logo";
+import toast from "react-hot-toast";
+import "./Login.scss";
 
 type FormData = {
     email: string;
@@ -18,6 +19,7 @@ const Login = () => {
 
     useEffect(() => {
         if (loggedIn === "true") {
+            toast.error("You are already logged in.", { duration: 2000 })
             navigate("/users")
 
         }
@@ -55,11 +57,13 @@ const Login = () => {
             );
 
             if (user) {
+                toast.success("Login successful", { duration: 2000 })
                 localStorage.setItem("login", "true")
                 navigate("/users");
             } else {
                 // Failed login
-                setLoginError("Invalid email or password");
+
+                toast.error("Invalid email or password", { duration: 2000 });
             }
         } catch (error) {
             setLoginError("An error occurred. Please try again.");
@@ -103,9 +107,11 @@ const Login = () => {
                                 disabled={isLoading} // Disable input during loading
                             />
                         </div>
-                        {errors.email && (
-                            <p className="error-message">{errors.email.message}</p>
-                        )}
+                        <div>
+                            {errors.email && (
+                                <p className="error-message">{errors.email.message}</p>
+                            )}
+                        </div>
 
                         {/* Password Input */}
                         <div className="input-container">
