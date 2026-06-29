@@ -11,8 +11,8 @@ const NotFound = () => {
                 <p className="not-found-description">
                     Oops! The page you're looking for doesn't exist or has been moved.
                 </p>
-                <Link to="/dashboard" className="back-to-dashboard">
-                    <FiArrowLeft /> Back to Dashboard
+                <Link to="/users" className="back-to-dashboard">
+                    <FiArrowLeft /> Go back
                 </Link>
             </div>
         </div>
